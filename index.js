@@ -4,7 +4,7 @@ const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server, {
     cors: {
-        origin: "*"
+        origin: '*'
     }
 });
 
@@ -39,4 +39,4 @@ io.on("connection", (socket) => {
     });
 })
 
-server.listen(3030);
+server.listen(process.env.PORT || 3030);

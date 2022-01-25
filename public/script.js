@@ -23,26 +23,22 @@ const user = prompt("Enter your name");
 let myVideoStream;
 myVideo.muted = true;
 //Adding Peer For Multiple Connections
-var peer = new Peer(undefined, {
-    path: "/peersjs",
-    host: "/",
-    port: "3030"
-});
+var peer = new Peer(undefined);
 navigator.mediaDevices.getUserMedia({
     audio: true,
     video: true
-}).then((streaming) => {
-    myVideoStream = streaming;
-    addVideoStream(myVideo, streaming)
+}).then((stream) => {
+    myVideoStream = stream;
+    addVideoStream(myVideo, stream)
     peer.on("call", (call) => {
-        call.answer(streaming)
+        call.answer(stream)
         const video = document.createElement("video");
         call.on("stream", (useVideoStream) => {
             addVideoStream(video, useVideoStream)
         })
     })
     socket.on("user-connected", (userId) => {
-        connectToNewUser(userId, streaming)
+        connectToNewUser(userId, stream)
     })
 });
 
@@ -76,6 +72,7 @@ send.addEventListener("click", (e) => {
     if (text.value.length !== 0){
         socket.emit("message", text.value);
         text.value = "";
+       
     }
 })
 text.addEventListener("keydown", (e) => {
@@ -93,12 +90,12 @@ muteButton.addEventListener("click", () => {
     const enabled = myVideoStream.getAudioTracks()[0].enabled;
     if (enabled){
         myVideoStream.getAudioTracks()[0].enabled = false;
-        html = `<i class= "fas fa-microphone-slash></i>`;
+        html = `<i class= "fas fa-microphone-slash"></i>`;
         muteButton.classList.toggle("background__red");
         muteButton.innerHTML = html;
     }else {
         myVideoStream.getAudioTracks()[0].enabled = true;
-        html = `<i class= "fas fa-microphone></i>`;
+        html = `<i class= "fas fa-microphone"></i>`;
         muteButton.classList.toggle("background__red");
         muteButton.innerHTML = html;
     }
@@ -107,12 +104,12 @@ stopVideo.addEventListener("click", () => {
     const enabled = myVideoStream.getVideoTracks()[0].enabled;
     if (enabled){
         myVideoStream.getVideoTracks()[0].enabled = false;
-        html = `<i class= "fas fa-video-slash></i>`;
+        html = `<i class= "fas fa-video-slash"></i>`;
         stopVideo.classList.toggle("background__red");
         stopVideo.innerHTML = html;
     }else {
         myVideoStream.getVideoTracks()[0].enabled = true;
-        html = `<i class= "fas fa-video></i>`;
+        html = `<i class= "fas fa-video"></i>`;
         stopVideo.classList.toggle("background__red");
         stopVideo.innerHTML = html;
     }
@@ -127,7 +124,7 @@ inviteButton.addEventListener("click", (e) => {
 
 socket.on("createMessage", (message, userName) => {
     messages.innerHTML = messages.innerHTML + 
-    `<div class= message>
+    `<div class= "message">
             <b><i class="fas fa-user-circle"></i>
             <span>${userName == user ? "me": userName}</span>
             </b>

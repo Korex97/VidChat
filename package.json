@@ -4,7 +4,7 @@
   "description": "A video chat application",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,8 +17,8 @@
     "ejs": "^3.1.6",
     "express": "^4.17.2",
     "nodemon": "^2.0.15",
-    "peer": "^0.6.1",
-    "socket.io": "^4.4.1",
+    "peer": "^0.5.3",
+    "socket.io": "^2.3.0",
     "uuid": "^8.3.2"
   }
 }
